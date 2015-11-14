@@ -17,6 +17,7 @@ NON_INVST_ACCOUNT_TYPES = [
     '!Type:Cash',
     '!Type:Bank',
     '!Type:Ccard',
+    '!Type:CCard',
     '!Type:Oth A',
     '!Type:Oth L',
     '!Type:Invoice',  # Quicken for business only
@@ -38,7 +39,7 @@ class QifParser(object):
         if len(data) == 0:
             raise QifParserException('Data is empty')
         qif_obj = Qif()
-        chunks = data.split('\n^\n')
+        chunks = data.split('\r\n^\r\n')
         last_type = None
         last_account = None
         transactions_header = None
@@ -53,7 +54,7 @@ class QifParser(object):
         for chunk in chunks:
             if not chunk:
                 continue
-            first_line = chunk.split('\n')[0]
+            first_line = chunk.split('\r\n')[0]
             if first_line == '!Type:Cat':
                 last_type = 'category'
             elif first_line == '!Account':
